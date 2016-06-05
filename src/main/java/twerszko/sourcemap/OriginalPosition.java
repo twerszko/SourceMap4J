@@ -6,13 +6,13 @@ import javax.annotation.concurrent.Immutable;
 import java.util.Objects;
 
 @Immutable
-public class Position {
+public class OriginalPosition {
     public final Long line;
     public final Long column;
     public final String source;
     public final String name;
 
-    private Position(Builder builder) {
+    private OriginalPosition(Builder builder) {
         this.line = builder.line;
         this.column = builder.column;
         this.source = builder.source;
@@ -27,7 +27,7 @@ public class Position {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Position position = (Position) o;
+        OriginalPosition position = (OriginalPosition) o;
         return Objects.equals(line, position.line) &&
                 Objects.equals(column, position.column) &&
                 Objects.equals(source, position.source) &&
@@ -78,8 +78,8 @@ public class Position {
             return this;
         }
 
-        public Position build() {
-            return new Position(this);
+        public OriginalPosition build() {
+            return new OriginalPosition(this);
         }
     }
 }

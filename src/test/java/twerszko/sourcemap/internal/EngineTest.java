@@ -1,6 +1,8 @@
 package twerszko.sourcemap.internal;
 
-import org.junit.Before;
+import jdk.nashorn.api.scripting.JSObject;
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.script.ScriptException;
@@ -12,10 +14,10 @@ import static org.fest.assertions.Assertions.assertThat;
 
 public class EngineTest {
 
-    private Engine engine;
+    private static Engine engine;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeClass
+    public static void setUpClass() throws Exception {
         engine = Engine.create();
     }
 
@@ -35,5 +37,28 @@ public class EngineTest {
         catchException(engine).eval("function () {");
         // then
         assertThat((Exception) caughtException()).isInstanceOf(ScriptException.class);
+    }
+
+    @Test
+    public void should_parse_json() throws Exception {
+        // given
+        String json = "{\"test\":\"abc\"}";
+        // when
+        JSObject result = engine.parseJson(json);
+        // then
+        assertThat(engine.<String>getMember(result, "test")).isEqualTo("abc");
+    }
+
+    @Test
+    public void should_eval_es6_features() throws Exception {
+        // given
+        engine.evalResource("es6-test.js");
+
+        // when
+        ScriptObjectMirror rawResult = engine.invokeFunction("testEs6");
+        String[] result = rawResult.to(String[].class);
+
+        // then
+        assertThat(result).containsOnly("a", "b", "c");
     }
 }

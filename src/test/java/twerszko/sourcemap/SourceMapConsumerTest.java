@@ -23,7 +23,7 @@ public class SourceMapConsumerTest {
     public void should_find_original_position() throws Exception {
         // given
         SourceMapConsumer consumer = sourceMap.newSourceMapConsumer(stream(SIMPLE_SOURCE_MAP));
-        Position expectedPosition = Position.newPosition()
+        OriginalPosition expectedPosition = OriginalPosition.newPosition()
                 .inLine(2L)
                 .inColumn(10L)
                 .inSource("http://example.com/www/js/two.js")
@@ -31,7 +31,7 @@ public class SourceMapConsumerTest {
                 .build();
 
         // when
-        Position position = consumer.originalPositionFor(2, 28);
+        OriginalPosition position = consumer.originalPositionFor(2, 28);
 
         // then
         assertThat(position).isEqualTo(expectedPosition);

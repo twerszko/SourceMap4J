@@ -36,12 +36,12 @@ public class SourceMapConsumer {
         return Lists.newArrayList(sources.to(String[].class));
     }
 
-    public Position originalPositionFor(int line, int column) throws ScriptException, NoSuchMethodException {
+    public OriginalPosition originalPositionFor(int line, int column) throws ScriptException, NoSuchMethodException {
         String json = "{\"line\":" + line + ", \"column\":" + column + "}";
         JSObject argument = engine.parseJson(json);
         JSObject result = engine.invokeMethod(delegate, "originalPositionFor", argument);
 
-        return Position.newPosition()
+        return OriginalPosition.newPosition()
                 .inLine(toLong(engine.getMember(result, "line")))
                 .inColumn(toLong(engine.getMember(result, "column")))
                 .inSource(engine.getMember(result, "source"))

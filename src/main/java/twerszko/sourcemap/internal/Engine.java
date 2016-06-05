@@ -24,6 +24,7 @@ public class Engine {
         ScriptEngineManager factory = new ScriptEngineManager();
         ScriptEngine engine = factory.getEngineByName("nashorn");
         evalResource(engine, "nashorn-polyfill.js");
+        evalResource(engine, "es6-shim.min.js");
         return new Engine(engine);
     }
 
@@ -63,7 +64,7 @@ public class Engine {
         }
     }
 
-    public ScriptObjectMirror parseJson(String json) throws ScriptException {
+    public JSObject parseJson(String json) throws ScriptException {
         return invokeMethod(eval("JSON"), "parse", json);
     }
 
